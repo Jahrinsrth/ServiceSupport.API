@@ -45,6 +45,7 @@ namespace Application.Services
         private Agent? FindAvailableAgent()
         {
             const int maxConCurrencyChats = 10;
+
             var availableAgent = _agents.Where(a => a.IsActive && a.CurrentChats < maxConCurrencyChats)
                                  .OrderBy(a => a.SeniorityLevel)
                                  .FirstOrDefault();

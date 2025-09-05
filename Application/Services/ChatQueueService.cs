@@ -10,7 +10,7 @@ namespace Application.Services
     public class ChatQueueService : IChatQueueService
     {
         private readonly ILogger<ChatQueueService> _logger;
-        
+
         public ChatQueueService(ILogger<ChatQueueService> logger)
         {
             _logger = logger;
@@ -18,7 +18,7 @@ namespace Application.Services
 
         public ChatSessionResponseDto CreateChat(ChatSessionDto chatSessionDto)
         {
-            ChatSessionResponseDto response  = new ChatSessionResponseDto();
+            ChatSessionResponseDto response = new ChatSessionResponseDto();
 
             ChatSession chatSession = new ChatSession();
             chatSession.Id = chatSessionDto.Id;
@@ -58,11 +58,11 @@ namespace Application.Services
                     session.IsPollNeeded = false;
                     _logger.LogInformation($"Chat {session.Id} poll ended after 3 attempts.");
                 }
-                else 
+                else
                 {
                     session.PollCount++;
                     session.IsActive = true;
-                }            
+                }
             }
         }
 
@@ -73,7 +73,7 @@ namespace Application.Services
                 session.Status = ChatStatusTypeOptions.Inactive;
                 session.IsActive = false;
                 _logger.LogWarning($"Chat {session.Id} marked inactive.");
-            }          
+            }
         }
 
         public void RemoveChat(ChatSession session)
@@ -100,11 +100,10 @@ namespace Application.Services
         }
 
         private bool IsOfficeHours()
-        { 
+        {
             // Assuming office hours are from 9 to 5
             var now = DateTime.UtcNow;
             return now.Hour >= 9 && now.Hour < 17;
         }
-
     }
 }

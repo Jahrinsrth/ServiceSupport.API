@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using DataStore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -20,22 +19,30 @@ namespace InfraStructure.BackGroundJobs
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var chatSessions = _chatQueueService.GetAll();
-
-                foreach (var session in chatSessions)
+                try
                 {
-                    if (session.IsPollNeeded)
+                    var chatSessions = _chatQueueService.GetAll();
+
+                    foreach (var session in chatSessions)
                     {
-                        for (int i = 1; i <= 3; i++)
+                        if (session.IsPollNeeded)
                         {
-                            _chatQueueService.Poll(session);
-                        } 
+                            for (int i = 1; i <= 3; i++)
+                            {
+                                _chatQueueService.Poll(session);
+                            }
+                        }
+                    }
+
+                    foreach (var session in chatSessions)
+                    {
+                        _chatQueueService.MonitorInactivity(session);
                     }
                 }
-
-                foreach (var session in chatSessions)
+                catch (Exception ex)
                 {
-                    _chatQueueService.MonitorInactivity(session);
+                    _logger.LogError(ex, "Error in PollingService");
+                    throw;
                 }
 
                 await Task.Delay(1000, stoppingToken);

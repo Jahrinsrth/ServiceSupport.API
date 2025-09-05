@@ -7,7 +7,6 @@ namespace DataStore
         public static List<Agent> Agents = AgentSeeder.SeedAgents();
         public static List<Agent> OverflowAgents = AgentSeeder.SeedOverflowTeam();
         public static Queue<ChatSession> ChatQueue = new();
-        public static List<ChatSession> ActiveSessions = new();
         public static bool ChatResponse = false;
     }
 }

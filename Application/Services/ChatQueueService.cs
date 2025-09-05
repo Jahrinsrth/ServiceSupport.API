@@ -25,7 +25,6 @@ namespace Application.Services
             chatSession.CreatedDate = chatSessionDto.CreatedDate;
             chatSession.Status = ChatStatusTypeOptions.Pending;
 
-            // logic need to redifined
             var capacity = CalculateTeamCapacity();
             var maxQueueLength = (int)(capacity * 1.5);
 
@@ -48,7 +47,6 @@ namespace Application.Services
             _logger.LogInformation($"Chat {chatSession.Id} enqueued.");
 
             return response;
-
         }
 
         public void Poll(ChatSession session)
